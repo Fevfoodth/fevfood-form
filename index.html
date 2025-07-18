@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>ฟอร์มเมนู FevFood</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     html, body {
       margin: 0;
@@ -80,7 +82,7 @@
   <div class="wrapper">
     <div class="container">
       <h2>แนะนำเมนูที่คุณชอบ<br>แล้วอยากบอกต่อความอร่อย</h2>
-      <form action="https://script.google.com/macros/s/AKfycbwb0iTXkF-EZ55z4dqbMTNvKEA7_C2yUbi3W60m-og-vMo_hGSTsL6GP_urK47IKaDE/exec" method="POST">
+      <form id="menuForm">
         <label>ชื่อของคุณ (ไม่บังคับ)</label>
         <input type="text" name="name" placeholder="ใส่จะได้เลี้ยงข้าวถูก">
 
@@ -120,6 +122,47 @@
       option.textContent = name;
       select.appendChild(option);
     });
+
+    document.getElementById('menuForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const url = 'https://script.google.com/macros/s/AKfycbwb0iTXkF-EZ55z4dqbMTNvKEA7_C2yUbi3W60m-og-vMo_hGSTsL6GP_urK47IKaDE/exec';
+
+      Swal.fire({
+        title: 'กำลังส่งข้อมูล...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'ส่งข้อมูลสำเร็จ!',
+            text: 'ขอบคุณสำหรับเมนูแนะนำของคุณ 😊',
+            confirmButtonText: 'เพิ่มเมนูต่อ',
+            confirmButtonColor: '#ff5e3a'
+          });
+          form.reset();
+        } else {
+          throw new Error('ส่งข้อมูลไม่สำเร็จ');
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: err.message
+        });
+      }
+    });
   </script>
 </body>
+
 </html>
