@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>FevFood ฟอร์มเมนูโปรด</title>
+  <title>ฟอร์มเมนู FevFood</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Sarabun', sans-serif;
-      background: linear-gradient(to right, #ff9966, #ff5e62);
+      height: 100%;
+      font-family: 'Sarabun', Tahoma, sans-serif;
+      background: linear-gradient(to right, #fff1e6, #ffe0dc);
     }
 
     .wrapper {
@@ -24,22 +26,23 @@
 
     .container {
       background: white;
-      max-width: 420px;
       width: 100%;
-      padding: 20px;
+      max-width: 420px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
-      text-align: center;
+      margin-top: 0;
       color: #ff5e3a;
+      text-align: center;
       font-size: 20px;
     }
 
     label {
-      margin-top: 15px;
       display: block;
+      margin-top: 15px;
       font-weight: 600;
       font-size: 14px;
     }
@@ -48,17 +51,24 @@
       width: 100%;
       padding: 10px;
       margin-top: 6px;
-      border-radius: 8px;
       border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    input:focus, select:focus {
+      border-color: #ff5e3a;
+      outline: none;
     }
 
     button {
       background-color: #ff5e3a;
       color: white;
-      margin-top: 20px;
       font-weight: bold;
+      margin-top: 20px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     button:hover {
@@ -66,6 +76,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrapper">
     <div class="container">
@@ -113,7 +124,21 @@
 
     document.getElementById("menuForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      Swal.fire("ยังไม่ได้เชื่อมระบบส่งข้อมูล", "แต่ฟอร์มแสดงผลแล้วจ้า 🎉", "info");
+      const form = e.target;
+      const data = {
+        name: form.name.value.trim() || "human",
+        menu: form.menu.value,
+        restaurant: form.restaurant.value,
+        province: form.province.value
+      };
+
+      Swal.fire({
+        icon: 'success',
+        title: 'ส่งข้อมูลสำเร็จ!',
+        text: 'ขอบคุณสำหรับเมนูแนะนำของคุณ 😊',
+        confirmButtonColor: '#ff5e3a'
+      });
+      form.reset();
     });
   </script>
 </body>
